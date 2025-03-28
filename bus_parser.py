@@ -4,7 +4,7 @@ import logging
 _LOGGER = logging.getLogger(__name__)
 
 async def fetch_bus_data(stop_id: str, buses: str):
-    url = "http://192.168.1.114:8000/api/bus/schedule"
+    url = "http://localhost:8000/api/bus/schedule"
     payload = {"stop_id": stop_id}
     _LOGGER.info("Отправка POST-запроса к %s с payload: %s", url, payload)
 
