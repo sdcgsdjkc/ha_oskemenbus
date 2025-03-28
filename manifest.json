@@ -1,10 +1,9 @@
 {
-  "domain": "oskemenbus",
+  "domain": "ha_oskemenbus",
   "name": "Oskemen Bus",
-  "version": "1.0",
-  "documentation": "https://github.com/vertigoDK/oskemenbus-parser",
+  "documentation": "https://github.com/sdcgsdjkc/ha_oskemenbus",
   "dependencies": [],
-  "requirements": ["aiohttp", "beautifulsoup4", "fastapi", "uvicorn"],
-  "codeowners": ["@ваш_ник"],
-  "config_flow": true
+  "codeowners": ["@sdcgsdjkc"],
+  "requirements": [],
+  "version": "1.0.0"
 }

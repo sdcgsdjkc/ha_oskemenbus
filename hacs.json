@@ -1,0 +1,7 @@
+{
+  "name": "Oskemen Bus",
+  "country": "KZ",
+  "homeassistant": "2025.3.4",
+  "domains": ["sensor"],
+  "iot_class": "Cloud Polling"
+}
