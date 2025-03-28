@@ -1,6 +1,6 @@
 import logging
-from homeassistant.helpers.entity import Entity
-from .bus_parser import fetch_bus_data
+from homeassistant.components.sensor import SensorEntity
+from .oskemenbus_parser.main import fetch_bus_data
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -11,7 +11,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     _LOGGER.info("Настройка сенсора для остановки: %s, автобусы: %s", stop_id, buses)
     async_add_entities([OskemenBusSensor(stop_id, buses)], update_before_add=True)
 
-class OskemenBusSensor(Entity):
+class OskemenBusSensor(SensorEntity):
     def __init__(self, stop_id, buses):
         self._stop_id = stop_id
         self._buses = buses
@@ -28,14 +28,14 @@ class OskemenBusSensor(Entity):
         return self._state
 
     @property
-    def extra_state_attributes(self):
+    def attributes(self):
         return self._attributes
 
     async def async_update(self):
         _LOGGER.info("Обновление данных для остановки %s", self._stop_id)
         data = await fetch_bus_data(self._stop_id, self._buses)
         if not data:
-            self._state = "Ошибка получения данных"
+            self._state = "Ошибка"
             self._attributes = {}
             _LOGGER.error("fetch_bus_data вернул None для остановки %s", self._stop_id)
             return
@@ -48,16 +48,14 @@ class OskemenBusSensor(Entity):
             number = route.get("number")
             end_stop = route.get("end_stop")
             arrival_times = route.get("arrival_times", [])
-            # Если заданы времена прибытия, возьмём первое значение
             if arrival_times:
-                route_str = f"Маршрут {number} ({end_stop}): {arrival_times[0]}"
+                route_str = f"{number} ({end_stop}): {arrival_times[0]}"
             else:
-                route_str = f"Маршрут {number} ({end_stop}): Нет данных"
+                route_str = f"{number} ({end_stop}): Нет данных"
             routes_info.append(route_str)
 
         if routes_info:
-            # Если несколько маршрутов, объединяем их через перевод строки
-            self._state = "\n".join(routes_info)
+            self._state = routes_info[0]  # Только первый маршрут
         else:
             self._state = "Нет данных"
 

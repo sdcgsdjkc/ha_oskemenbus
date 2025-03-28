@@ -3,7 +3,7 @@ import asyncio
 import logging
 from homeassistant import config_entries
 
-DOMAIN = "oskemenbus"
+DOMAIN = "ha_oskemenbus"
 _LOGGER = logging.getLogger(__name__)
 
 async def async_setup(hass, config):
@@ -13,7 +13,7 @@ async def async_setup(hass, config):
 async def async_setup_entry(hass, entry):
     _LOGGER.info("async_setup_entry вызван для %s с entry_id: %s", DOMAIN, entry.entry_id)
     # Формируем путь к main.py, который находится в подпапке oskemenbus_parser
-    script_path = hass.config.path("custom_components", DOMAIN, "oskemenbus_parser", "main.py")
+    script_path = hass.config.path("custom_components", "ha_oskemenbus", "oskemenbus_parser", "main.py")
     _LOGGER.info("Запуск FastAPI-сервера из %s", script_path)
     try:
         process = await asyncio.create_subprocess_exec(
